@@ -1,21 +1,27 @@
 import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 
-function requestStatus(state = false, action) {
+function requestStatus(state = { profileInfoStatus: false, tasksInfoStatus: false }, action) {
     switch (action.type) {
     case "REQUEST_POST":
-        return true;
+        return Object.assign({}, state, { profileInfoStatus: true });
     case "POST_SUCCESS":
-        return false;
+        return Object.assign({}, state, { profileInfoStatus: false });
+    case "TASK_REQUEST":
+        return Object.assign({}, state, { tasksInfoStatus: true });
+    case "TASK_SUCCESS":
+        return Object.assign({}, state, { tasksInfoStatus: false });
     default:
         return state;
     }
 }
 
-function requestFailed(state = false, action) {
+function requestFailed(state = { profileIsFailed: false, tasksIsFailed: false }, action) {
     switch (action.type) {
     case "POST_FAILED":
-        return true;
+        return Object.assign({}, state, { profileIsFailed: true });
+    case "TASKS_FAILED":
+        return Object.assign({}, state, { tasksIsFailed: true });
     default:
         return state;
     }
@@ -27,7 +33,7 @@ function updateInfo(currentInfo, newInfo) {
     return currentInfo;
 }
 
-function getFiles(state = {}, action) {
+function getProfileInfo(state = {}, action) {
     let updatedInfo;
     switch (action.type) {
     case "POST_SUCCESS":
@@ -40,11 +46,35 @@ function getFiles(state = {}, action) {
     }
 }
 
+function changeTaskStatus(state, id, status) {
+     const newState = state.tasks.map((task) => {
+        if (task.id === id) {
+            return Object.assign({}, task, { status });
+        }
+        return task;
+    });
+    return Object.assign({}, state, { tasks: newState });
+}
+
+function getProfileTasks(state = {}, action) {
+    let updatedStatus;
+    switch (action.type) {
+    case "TASK_SUCCESS":
+        return action.data;
+    case "TASK_STATUS":
+        updatedStatus = changeTaskStatus(state, action.id, action.status);
+        return updatedStatus;
+    default:
+        return state;
+    }
+}
+
 const reducers = combineReducers({
     requestStatus,
     requestFailed,
-    getFiles,
-    form: formReducer,
+    getProfileInfo,
+    getProfileTasks,
+    form: formReducer
 });
 
 export default reducers;

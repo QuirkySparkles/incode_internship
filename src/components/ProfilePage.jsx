@@ -35,7 +35,7 @@ class ProfilePage extends React.Component {
                 lastName: clientInfo.lastName,
                 email: clientInfo.email,
                 birthDate,
-                skillList,
+                skillList
             };
             return (
               <div>
