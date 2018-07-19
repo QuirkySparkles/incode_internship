@@ -3,6 +3,7 @@ import { Field, reduxForm } from "redux-form";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import Typography from "@material-ui/core/Typography";
 import "./EditForm.css";
 
 const validate = (values) => {
@@ -65,6 +66,9 @@ const renderDatePicker = ({
 
 const EditForm = ({ handleSubmit, handleCancel }) => (
   <div className="edit-form">
+    <Typography variant="display1" align="center">
+      Edit
+    </Typography>
     <form onSubmit={handleSubmit}>
       <div className="edit-input">
         <Field name="firstName" component={renderTextField} label="First name" />

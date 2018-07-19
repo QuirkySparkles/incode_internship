@@ -8,6 +8,7 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Fiber from "@material-ui/icons/PlayArrow";
+import Divider from "@material-ui/core/Divider";
 import "./UserInfo.css";
 
 
@@ -15,14 +16,20 @@ const UserInfo = ({ clientInfo, turnOnEdit }) => {
     const date = clientInfo.birthDate;
     const birthDate = `${date.slice(8, 10)}.${date.slice(5, 7)}.${date.slice(0, 4)}`;
     const listItems = clientInfo.skillList.map(item => (
-      <ListItem key={item}>
-        <ListItemIcon>
-          <Fiber />
-        </ListItemIcon>
-        <ListItemText primary={item} />
-      </ListItem>));
+      <div key={item}>
+        <ListItem>
+          <ListItemIcon>
+            <Fiber />
+          </ListItemIcon>
+          <ListItemText primary={item} />
+        </ListItem>
+        <Divider />
+      </div>));
     return (
       <div>
+        <Typography variant="display2" align="center">
+          Profile info
+        </Typography>
         <Card>
           <CardContent>
             <Edit onClick={() => turnOnEdit(true)} className="edit-icon" />
