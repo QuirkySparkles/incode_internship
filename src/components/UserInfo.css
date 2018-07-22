@@ -1,0 +1,12 @@
+.edit-icon {
+    position: relative;
+    left: 50%;
+}
+
+.edit-icon:hover {
+    background: #e0e1e2;
+}
+
+.edit-icon:active {
+    background: #b2b2b2;
+}
