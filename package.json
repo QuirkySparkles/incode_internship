@@ -3,18 +3,34 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^1.4.0",
+    "@material-ui/icons": "^1.1.0",
+    "axios": "^0.18.0",
+    "connected-react-router": "^4.3.0",
+    "history": "^4.7.2",
+    "material-ui": "^0.20.1",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-scripts": "1.1.4",
     "react-redux": "^5.0.6",
+    "react-router-dom": "^4.3.1",
+    "react-scripts": "1.1.4",
     "redux": "^3.7.2",
-    "axios": "^0.18.0",
-    "material-ui": "^0.20.1"
+    "redux-form": "^7.4.2",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "eslint": "^5.1.0",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-config-google": "^0.9.1",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-react": "^7.10.0",
+    "husky": "^0.14.3"
   }
 }
