@@ -4,6 +4,7 @@ import UserInfo from "./UserInfo/UserInfo";
 import EditForm from "./EditForm/EditForm";
 import { switchEdit } from "../store/actions";
 
+
 class ProfilePage extends React.Component {
     constructor(props) {
         super(props);
