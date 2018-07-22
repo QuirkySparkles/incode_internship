@@ -2,9 +2,14 @@ import React, { Component } from "react";
 import "./App.css";
 import { connect } from "react-redux";
 import { Route, withRouter } from "react-router-dom";
-import { getPosts, editUserInfo } from "./store/actions";
+import Loader from "./components/Loader";
+import getPosts from "./store/actions/thunk/getPosts";
+import { editProfile } from "./store/actions";
 import ProfilePage from "./components/ProfilePage";
-import TasksPage from "./components/TasksPage";
+import TasksPage from "./components/TasksPage/TasksPage";
+import TasksReview from "./components/TaskReview/TaskReview";
+import Header from "./components/Header/Header";
+
 
 
 class App extends Component {
@@ -19,19 +24,27 @@ class App extends Component {
     }
 
     onEditChange(values) {
-        this.props.dispatch(editUserInfo(values));
+        this.props.dispatch(editProfile(values));
     }
 
     render() {
-        const { clientInfo, taskList } = this.props;
+        const { profileInfo, taskList } = this.props;
+        if (!profileInfo.results || !Object.keys(taskList).length) {
+            return (
+              <div className="circular">
+                <Loader />
+              </div>
+            );
+        }
         return (
           <div className="App">
+            <Header />
             <Route
               path="/"
               exact
               render={() => (
                 <ProfilePage
-                  clientInfo={clientInfo}
+                  profileInfo={profileInfo}
                   onEditChange={this.onEditChange}
                 />
               )}
@@ -41,17 +54,23 @@ class App extends Component {
               exact
               render={() => <TasksPage taskList={taskList} />}
             />
+            <Route
+              path="/tasks/:id"
+              component={TasksReview}
+            />
           </div>
         );
     }
 }
 
 function mapStateToProps(state) {
-    const clientInfo = state.getProfileInfo;
-    const taskList = state.getProfileTasks;
+    const { requestProfile, requestTasks, profileInfo } = state;
+    const { taskList } = state.profileTasks;
     const { form } = state;
     return {
-        clientInfo,
+        requestProfile,
+        requestTasks,
+        profileInfo,
         taskList,
         form
     };

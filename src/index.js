@@ -1,23 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
-import thunkMiddleware from "redux-thunk";
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
+import { ConnectedRouter } from "connected-react-router";
 import App from "./App";
-import reducers from "./store/reducers";
+import store, { history } from "./store/store";
 
-const store = createStore(
-    reducers,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-    applyMiddleware(thunkMiddleware)
-);
 
 ReactDOM.render(
   <Provider store={store}>
-    <BrowserRouter>
+    <ConnectedRouter history={history}>
       <App />
-    </BrowserRouter>
+    </ConnectedRouter>
   </Provider>,
   document.getElementById("root") // eslint-disable-line no-undef
 );
