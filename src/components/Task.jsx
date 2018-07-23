@@ -6,6 +6,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
+import { Link } from "react-router-dom";
 import { changeTaskStatus } from "../store/actions";
 
 const statuses = ["To Do", "In Progress", "Peer Review", "Done"];
@@ -24,8 +25,8 @@ class Task extends React.Component {
         const { task } = this.props;
         const isAdmin = false;
         return (
-          <div>
-            <Card>
+          <Card>
+            <Link to={`/tasks/${task.id}`} style={{ textDecoration: "none" }}>
               <CardHeader
                 title={task.title}
                 subheader={`Status: ${task.status}`}
@@ -35,30 +36,29 @@ class Task extends React.Component {
                   {task.shortDescription}
                 </Typography>
               </CardContent>
-              <CardContent>
-                <InputLabel htmlFor="status">
-                  Change status
-                </InputLabel>
-                <Select
-                  native
-                  inputProps={{ id: "status" }}
-                  onChange={e => this.handleStatus(task.id, e)}
-                >
-                  {statuses.map((item) => {
-                    if (item === "Done" && !isAdmin) {
-                      return null;
-                    }
-                    return (
-                      <option key={item} value={item}>
-                        {item}
-                      </option>
-                    );
-                  })
-                }
-                </Select>
-              </CardContent>
-            </Card>
-          </div>
+            </Link>
+            <CardContent>
+              <InputLabel htmlFor="status">
+                Change status
+              </InputLabel>
+              <Select
+                native
+                inputProps={{ id: "status" }}
+                onChange={e => this.handleStatus(task.id, e)}
+              >
+                {statuses.map((item) => {
+                  if (item === "Done" && !isAdmin) {
+                    return null;
+                  }
+                  return (
+                    <option key={item} value={item}>
+                      {item}
+                    </option>
+                  );
+                })}
+              </Select>
+            </CardContent>
+          </Card>
     );
   }
 }

@@ -2,10 +2,14 @@ import React, { Component } from "react";
 import "./App.css";
 import { connect } from "react-redux";
 import { Route, withRouter } from "react-router-dom";
-import { getPosts, editUserInfo } from "./store/actions";
+import Loader from "./components/Loader";
+import { getPosts, loadBoardData } from "./store/actions/thunk";
+import { editProfile } from "./store/actions";
+import Header from "./components/Header/Header";
+import Board from "./components/Board/Board";
 import ProfilePage from "./components/ProfilePage";
-import TasksPage from "./components/TasksPage";
-
+import TasksPage from "./components/TasksPage/TasksPage";
+import TasksReview from "./components/TaskReview/TaskReview";
 
 class App extends Component {
     constructor(props) {
@@ -16,22 +20,35 @@ class App extends Component {
     componentDidMount() {
         this.props.dispatch(getPosts("userProfile"));
         this.props.dispatch(getPosts("taskList"));
+        this.props.dispatch(loadBoardData());
     }
 
     onEditChange(values) {
-        this.props.dispatch(editUserInfo(values));
+        this.props.dispatch(editProfile(values));
     }
 
     render() {
-        const { clientInfo, taskList } = this.props;
+        const { profileInfo, taskList } = this.props;
+        if (!profileInfo.results || !Object.keys(taskList).length) {
+            return (
+              <div className="circular">
+                <Loader />
+              </div>
+            );
+        }
         return (
           <div className="App">
+            <Header />
             <Route
-              path="/"
+              path="/main"
               exact
+              component={Board}
+            />
+            <Route
+              path="/profile"
               render={() => (
                 <ProfilePage
-                  clientInfo={clientInfo}
+                  profileInfo={profileInfo}
                   onEditChange={this.onEditChange}
                 />
               )}
@@ -41,17 +58,23 @@ class App extends Component {
               exact
               render={() => <TasksPage taskList={taskList} />}
             />
+            <Route
+              path="/tasks/:id"
+              component={TasksReview}
+            />
           </div>
         );
     }
 }
 
 function mapStateToProps(state) {
-    const clientInfo = state.getProfileInfo;
-    const taskList = state.getProfileTasks;
+    const { requestProfile, requestTasks, profileInfo } = state;
+    const { taskList } = state.profileTasks;
     const { form } = state;
     return {
-        clientInfo,
+        requestProfile,
+        requestTasks,
+        profileInfo,
         taskList,
         form
     };
