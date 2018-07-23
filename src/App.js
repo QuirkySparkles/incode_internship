@@ -3,12 +3,13 @@ import "./App.css";
 import { connect } from "react-redux";
 import { Route, withRouter } from "react-router-dom";
 import Loader from "./components/Loader";
-import getPosts from "./store/actions/thunk/getPosts";
+import { getPosts, loadBoardData } from "./store/actions/thunk";
 import { editProfile } from "./store/actions";
+import Header from "./components/Header/Header";
+import Board from "./components/Board/Board";
 import ProfilePage from "./components/ProfilePage";
 import TasksPage from "./components/TasksPage/TasksPage";
 import TasksReview from "./components/TaskReview/TaskReview";
-import Header from "./components/Header/Header";
 
 class App extends Component {
     constructor(props) {
