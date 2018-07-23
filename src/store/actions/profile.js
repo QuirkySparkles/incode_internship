@@ -5,7 +5,6 @@ import {
     EDIT_PROFILE
 } from "./types";
 
-
 export function profileRequest() {
     return {
         type: REQUEST_PROFILE
