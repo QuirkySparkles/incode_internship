@@ -14,3 +14,7 @@ export const ACTIVE_TASK = "ACTIVE_TASK";
 export const ADD_COMMENT = "ADD_COMMENT";
 
 export const GET_BOARD_DATA = "GET_BOARD_DATA";
+
+export const TOGGLE_CHAT = "TOGGLE_CHAT";
+export const LOAD_CHAT_HISTORY = "LOAD_CHAT_HISTORY";
+export const SEND_MESSAGE = "SEND_MESSAGE";
