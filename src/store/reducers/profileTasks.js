@@ -32,3 +32,4 @@ export default function profileTasks(state = { taskList: {}, activeTask: {} }, a
         return state;
     }
 }
+

@@ -10,7 +10,6 @@ import TasksPage from "./components/TasksPage/TasksPage";
 import TasksReview from "./components/TaskReview/TaskReview";
 import Header from "./components/Header/Header";
 
-
 class App extends Component {
     constructor(props) {
         super(props);
@@ -20,6 +19,7 @@ class App extends Component {
     componentDidMount() {
         this.props.dispatch(getPosts("userProfile"));
         this.props.dispatch(getPosts("taskList"));
+        this.props.dispatch(loadBoardData());
     }
 
     onEditChange(values) {
@@ -39,8 +39,12 @@ class App extends Component {
           <div className="App">
             <Header />
             <Route
-              path="/"
+              path="/main"
               exact
+              component={Board}
+            />
+            <Route
+              path="/profile"
               render={() => (
                 <ProfilePage
                   profileInfo={profileInfo}

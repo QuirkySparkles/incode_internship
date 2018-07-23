@@ -4,9 +4,17 @@ export const REQUEST_PROFILE_SUCCESS = "REQUEST_PROFILE_SUCCESS";
 export const SWITCH_EDIT = "SWITCH_EDIT";
 export const EDIT_PROFILE = "EDIT_PROFILE";
 
+export const TOGGLE_DRAWER = "TOGGLE_DRAWER";
+
 export const USER_TASK_REQUEST = "USER_TASK_REQUEST";
 export const USER_TASK_SUCCESS = "USER_TASK_SUCCESS";
 export const TASK_STATUS = "TASK_STATUS";
 export const ACTIVE_TASK = "ACTIVE_TASK";
 
 export const ADD_COMMENT = "ADD_COMMENT";
+
+export const GET_BOARD_DATA = "GET_BOARD_DATA";
+
+export const TOGGLE_CHAT = "TOGGLE_CHAT";
+export const LOAD_CHAT_HISTORY = "LOAD_CHAT_HISTORY";
+export const SEND_MESSAGE = "SEND_MESSAGE";

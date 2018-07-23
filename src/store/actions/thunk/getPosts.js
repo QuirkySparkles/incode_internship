@@ -2,7 +2,7 @@ import axios from "axios";
 import { profileRequest, profileSuccess } from "../profile";
 import { taskRequest, taskSuccess } from "../tasks";
 
-export default function getPosts(dataType) {
+export function getPosts(dataType) {
     const requestType = {};
     if (dataType === "userProfile") {
         requestType.request = profileRequest;
