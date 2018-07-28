@@ -1,22 +1,34 @@
 import {
-    REQUEST_PROFILE,
-    REQUEST_PROFILE_SUCCESS,
+    PROFILE_REQUEST,
+    PROFILE_SUCCESS,
+    PROFILE_FAILED,
     SWITCH_EDIT,
-    EDIT_PROFILE
+    EDIT_PROFILE_REQUEST,
+    EDIT_PROFILE_SUCCESS,
+    EDIT_PROFILE_FAILED,
+    CLEAR_EDIT_MESSAGE
 } from "./types";
 
 export function profileRequest() {
     return {
-        type: REQUEST_PROFILE
+        type: PROFILE_REQUEST
     };
 }
 
 export function profileSuccess(data) {
     return {
-        type: REQUEST_PROFILE_SUCCESS,
+        type: PROFILE_SUCCESS,
         data
     };
 }
+
+export function profileFailed(serverMessage) {
+    return {
+        type: PROFILE_FAILED,
+        serverMessage
+    };
+}
+
 
 export function switchEdit() {
     return {
@@ -24,9 +36,28 @@ export function switchEdit() {
     };
 }
 
-export function editProfile(newInfo) {
+export function editProfileRequest() {
     return {
-        type: EDIT_PROFILE,
-        newInfo
+        type: EDIT_PROFILE_REQUEST
+    };
+}
+
+export function editProfileSuccess(serverMessage) {
+    return {
+        type: EDIT_PROFILE_SUCCESS,
+        serverMessage
+    };
+}
+
+export function editProfileFailed(serverMessage) {
+    return {
+        type: EDIT_PROFILE_FAILED,
+        serverMessage
+    };
+}
+
+export function clearEditMessage() {
+    return {
+        type: CLEAR_EDIT_MESSAGE
     };
 }

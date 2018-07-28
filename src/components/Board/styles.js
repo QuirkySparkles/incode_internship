@@ -6,6 +6,9 @@ const styles = {
   title: {
       margin: "15px"
   },
+  serverMessage: {
+      marginTop: "25%"
+  },
 };
 
 export default styles;

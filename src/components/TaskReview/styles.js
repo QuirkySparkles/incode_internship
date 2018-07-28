@@ -4,6 +4,9 @@ const styles = {
   },
   select: {
     marginRight: "10px"
+  },
+  warning: {
+    margin: "20% 0"
   }
 };
 

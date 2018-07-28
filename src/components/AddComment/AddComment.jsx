@@ -1,7 +1,7 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 import IconButton from "@material-ui/core/IconButton";
-import Forward from "@material-ui/icons/Forward";
+import Send from "@material-ui/icons/Send";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import styles from "./styles";
@@ -31,7 +31,6 @@ const CommentField = ({
 );
 
 const AddComment = ({ handleSubmit, classes }) => (
-
   <form onSubmit={handleSubmit}>
     <div className={classes.comment}>
       <Field
@@ -43,7 +42,7 @@ const AddComment = ({ handleSubmit, classes }) => (
       />
     </div>
     <IconButton color="primary" type="submit" className={classes.button}>
-      <Forward />
+      <Send />
     </IconButton>
   </form>
 );

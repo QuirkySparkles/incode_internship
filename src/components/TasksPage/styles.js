@@ -5,6 +5,9 @@ const styles = {
   },
   taskItself: {
     width: "220px"
+  },
+  tip: {
+    margin: "30% 0"
   }
 };
 

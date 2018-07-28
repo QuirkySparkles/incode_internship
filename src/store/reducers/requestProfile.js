@@ -1,15 +1,31 @@
 import {
-    REQUEST_PROFILE,
-    REQUEST_PROFILE_SUCCESS
+    PROFILE_REQUEST,
+    PROFILE_SUCCESS,
+    PROFILE_FAILED
 } from "../actions/types";
 
-export default function requestProfile(state = false, action) {
+const initialState = {
+    serverMessage: "",
+    status: false
+};
+
+export default function requestProfile(state = initialState, action) {
     switch (action.type) {
-    case REQUEST_PROFILE:
-        return true;
-    case REQUEST_PROFILE_SUCCESS:
-        return false;
-    default:
-        return state;
+        case PROFILE_REQUEST:
+            return Object.assign({}, state, {
+                status: true,
+                serverMessage: ""
+            });
+        case PROFILE_SUCCESS:
+            return Object.assign({}, state, {
+                status: false
+            });
+        case PROFILE_FAILED:
+            return Object.assign({}, state, {
+                status: false,
+                serverMessage: action.serverMessage
+            });
+        default:
+            return state;
     }
 }
