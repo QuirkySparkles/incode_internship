@@ -5,14 +5,14 @@ import CardContent from "@material-ui/core/CardContent";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import { withStyles } from "@material-ui/core/styles";
-import Message from "../Message";
+import Comment from "../Comment";
 import styles from "./styles";
 
 const Comments = ({ commentList, classes }) => {
     if (!commentList.length) {
         return (
           <Typography variant="subheading">
-            There is no comments yet
+            There are no comments yet
           </Typography>);
     }
     return (
@@ -22,7 +22,7 @@ const Comments = ({ commentList, classes }) => {
             {commentList.map(comment => (
               (
                 <div key={comment.createdAt}>
-                  <Message content={comment} />
+                  <Comment content={comment} />
                   <Divider />
                 </div>)))
             }

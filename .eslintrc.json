@@ -22,6 +22,7 @@
         "indent": "off",
         "comma-dangle": "off",
         "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-        "react/destructuring-assignment": "off"
+        "react/destructuring-assignment": "off",
+        "no-underscore-dangle": "off"
     }
 }

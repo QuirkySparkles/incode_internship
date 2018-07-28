@@ -1,8 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Drawer, List, withStyles } from "@material-ui/core";
+import Typography from "@material-ui/core/Typography";
 import Loader from "../Loader";
-import { loadBoardData } from "../../store/actions/thunk";
+import loadBoardData from "../../store/actions/thunk/loadBoardData";
+import { deleteTask } from "../../store/actions/thunk/tasks";
 import toggleDrawer from "../../store/actions/drawer";
 import User from "../User";
 import AllTasks from "../AllTasks/AllTasks";
@@ -13,23 +15,39 @@ class Board extends React.Component {
     constructor(props) {
         super(props);
         this.toggleDrawer = this.toggleDrawer.bind(this);
-    }
-
-    componentDidMount() {
-        this.props.loadBoardData();
+        this.deleteTask = this.deleteTask.bind(this);
     }
 
     toggleDrawer() {
         this.props.toggleDrawer();
     }
 
+    deleteTask(taskId) {
+        this.props.deleteTask(taskId);
+    }
+
     render() {
         const {
-            drawerState, allUsers, allTasks, classes
+            drawerState,
+            allUsers,
+            allTasks,
+            classes,
+            isAdmin,
+            serverMessage
         } = this.props;
-        if (!allUsers.length || !Object.keys(allTasks).length) {
+
+        if (serverMessage) {
+            return (
+              <Typography variant="display1" className={classes.serverMessage}>
+                {serverMessage}
+              </Typography>
+            );
+        }
+
+        if (!allUsers.length || !allTasks.length) {
             return <Loader />;
         }
+
         return (
           <div>
             <Drawer
@@ -48,7 +66,11 @@ class Board extends React.Component {
                 ))}
               </List>
             </Drawer>
-            <AllTasks allTasks={allTasks} />
+            <AllTasks
+              allTasks={allTasks}
+              deleteTask={this.deleteTask}
+              isAdmin={isAdmin}
+            />
           </div>
         );
     }
@@ -56,17 +78,21 @@ class Board extends React.Component {
 
 function mapStateToProps(state) {
     const { drawerState } = state;
-    const { allUsers, allTasks } = state.boardData;
+    const { allUsers, allTasks, serverMessage } = state.boardData;
+    const { isAdmin } = state.profileInfo;
     return {
+        serverMessage,
         drawerState,
         allUsers,
-        allTasks
+        allTasks,
+        isAdmin
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        loadBoardData: () => dispatch(loadBoardData()),
+        deleteTask: taskId => dispatch(deleteTask(taskId)),
+        loadBoard: () => dispatch(loadBoardData()),
         toggleDrawer: () => dispatch(toggleDrawer())
     };
 }

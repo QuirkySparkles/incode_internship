@@ -2,8 +2,7 @@ const styles = {
   editForm: {
       padding: "30px",
       width: "60%",
-      margin: "0 auto",
-      marginTop: "4px",
+      margin: "4px auto 60px",
       border: "3px solid #ededed",
       borderTop: "none"
   },
