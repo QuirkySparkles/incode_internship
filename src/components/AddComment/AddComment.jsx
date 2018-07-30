@@ -40,10 +40,11 @@ const AddComment = ({ handleSubmit, classes }) => (
         placeholder="Your comment..."
         rows="5"
       />
+      <IconButton color="primary" type="submit" className={classes.button}>
+        <Send />
+      </IconButton>
     </div>
-    <IconButton color="primary" type="submit" className={classes.button}>
-      <Send />
-    </IconButton>
+
   </form>
 );
 

@@ -7,8 +7,12 @@ import BoardTask from "../BoardTask";
 import styles from "./styles";
 
 
-const TasksPage = ({
-    allTasks, classes, deleteTask, isAdmin
+const AllTasks = ({
+    allTasks,
+    classes,
+    deleteTask,
+    isAdmin,
+    showEditModal
 }) => (
   <div style={{ padding: 20 }}>
     <Grid container spacing={16} justify="center">
@@ -16,11 +20,21 @@ const TasksPage = ({
         <Typography variant="display3" align="center" className={classes.title}>
           All Tasks
         </Typography>
+        {!allTasks[0] && (
+          <Typography variant="display1" align="center" className={classes.tip}>
+            There are no tasks. At all.
+          </Typography>
+        )}
         <Grid container justify="center" spacing={16}>
-          {Object.keys(allTasks).map(item => (
-            <Grid key={allTasks[item]._id} item>
+          {allTasks.map(task => (
+            <Grid key={task._id} item>
               <Paper elevation={1} className={classes.taskItself}>
-                <BoardTask task={allTasks[item]} deleteTask={deleteTask} isAdmin={isAdmin} />
+                <BoardTask
+                  task={task}
+                  deleteTask={deleteTask}
+                  isAdmin={isAdmin}
+                  showEditModal={showEditModal}
+                />
               </Paper>
             </Grid>
           ))}
@@ -30,4 +44,4 @@ const TasksPage = ({
   </div>
 );
 
-export default withStyles(styles)(TasksPage);
+export default withStyles(styles)(AllTasks);

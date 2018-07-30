@@ -10,37 +10,37 @@ import {
 
 const initialState = {
     serverMessage: "",
-    status: false
+    isChanging: false
 };
 
 export default function handleComments(state = initialState, action) {
     switch (action.type) {
         case ADD_COMMENT_REQUEST:
             return Object.assign({}, state, {
-                status: true,
+                isChanging: true,
                 serverMessage: ""
             });
         case ADD_COMMENT_SUCCESS:
             return Object.assign({}, state, {
-                status: false
+                isChanging: false
             });
         case ADD_COMMENT_FAILED:
             return Object.assign({}, state, {
-                status: false,
+                isChanging: false,
                 serverMessage: action.serverMessage
             });
         case DELETE_COMMENT_REQUEST:
             return Object.assign({}, state, {
-                status: true,
+                isChanging: true,
                 serverMessage: ""
             });
         case DELETE_COMMENT_SUCCESS:
             return Object.assign({}, state, {
-                status: false
+                isChanging: false
             });
         case DELETE_COMMENT_FAILED:
             return Object.assign({}, state, {
-                status: false,
+                isChanging: false,
                 serverMessage: action.serverMessage
             });
         case CLEAR_COMMENT_SERVER_MESSAGE:

@@ -9,9 +9,10 @@ const styles = {
     maxWidth: "600px"
   },
   button: {
+    float: "left",
     position: "relative",
-    bottom: "4em",
-    left: "30%",
+    bottom: "90px",
+    left: "105%",
     marginLeft: "15px"
   }
 };

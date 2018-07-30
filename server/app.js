@@ -18,7 +18,6 @@ const dbAddress = `mongodb://${dbUser}:${password}@${uri}/${db}`;
 
 mongoose.connect(dbAddress, { useNewUrlParser: true }, (err) => {
     if (err) throw err;
-    console.log("Connected to DB!");
 });
 
 const app = express();

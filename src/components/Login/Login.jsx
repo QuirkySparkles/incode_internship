@@ -5,6 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import { NavLink, Redirect } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
 import tryLogin from "../../store/actions/thunk/login";
 import styles from "./styles";
@@ -50,7 +51,12 @@ const renderTextField = ({
 
 
 let Login = ({
-    handleSubmit, onLogin, classes, isAuth, errMessage
+    handleSubmit,
+    onLogin,
+    classes,
+    isAuth,
+    errMessage,
+    isLoginIn
 }) => {
     if (isAuth) {
         return (<Redirect to="/main" />);
@@ -72,8 +78,15 @@ let Login = ({
               {errMessage}
             </Typography>)}
           <br />
-          <Button variant="contained" color="primary" type="submit" size="large" className={classes.buttons}>
-             Login
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            size="large"
+            className={classes.buttons}
+            disabled={isLoginIn}
+          >
+            Login
           </Button>
           <NavLink to="/registration" className={classes.link}>
             <Button variant="contained" color="secondary" size="large" className={classes.buttons}>
@@ -81,14 +94,18 @@ let Login = ({
             </Button>
           </NavLink>
         </form>
+        {isLoginIn
+          && <CircularProgress className={classes.circular} size={20} /> }
       </div>
     );
 };
 
 function mapStateToProps(state) {
+    const { isLoginIn } = state.loginStatus;
     const isAuth = state.loginStatus.status;
-    const errMessage = state.loginStatus.message;
+    const errMessage = state.loginStatus.serverMessage;
     return {
+        isLoginIn,
         errMessage,
         isAuth
     };

@@ -5,6 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { NavLink, Redirect } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
 import tryRegistration from "../../store/actions/thunk/registration";
 import styles from "./styles";
@@ -54,15 +55,20 @@ const renderTextField = ({
 
 
 let Registration = ({
-    isAuth, handleSubmit, onRegistration, classes, errMessage
+    isAuth,
+    handleSubmit,
+    onRegistration,
+    classes,
+    errMessage,
+    isSigningUp
 }) => {
     if (isAuth) {
         return (<Redirect to="/main" />);
     }
     return (
-      <div className={classes.loginForm}>
+      <div className={classes.regForm}>
         <Typography variant="display1" align="center">
-          Registration
+          Sign Up
         </Typography>
         <form onSubmit={handleSubmit(onRegistration)}>
           <div className={classes.input}>
@@ -83,14 +89,23 @@ let Registration = ({
             </Typography>)
           }
           <br />
-          <Button variant="contained" color="secondary" type="submit" size="large" className={classes.buttons}>
-             Register
+          <Button
+            variant="contained"
+            color="secondary"
+            type="submit"
+            size="large"
+            className={classes.buttons}
+            disabled={isSigningUp}
+          >
+            Register
           </Button>
           <NavLink to="/" className={classes.link}>
             <Button variant="contained" color="primary" size="large" className={classes.buttons}>
               To Sign In
             </Button>
           </NavLink>
+          {isSigningUp
+            && <CircularProgress className={classes.circular} size={20} /> }
         </form>
       </div>
     );
@@ -98,8 +113,10 @@ let Registration = ({
 
 function mapStateToProps(state) {
     const isAuth = state.loginStatus.status;
-    const errMessage = state.registrationReq.message;
+    const isSigningUp = state.registrationReq.status;
+    const errMessage = state.registrationReq.serverMessage;
     return {
+        isSigningUp,
         errMessage,
         isAuth
     };

@@ -2,7 +2,8 @@ import {
     BOARD_DATA_REQUEST,
     BOARD_DATA_SUCCESS,
     BOARD_DATA_FAILED,
-    GET_ALL_TASKS
+    GET_ALL_TASKS,
+    GET_ALL_USERS
 } from "../actions/types";
 
 const initialState = {
@@ -28,6 +29,10 @@ export default function boardData(state = initialState, action) {
         case GET_ALL_TASKS:
             return Object.assign({}, state, {
                 allTasks: action.tasks
+            });
+        case GET_ALL_USERS:
+            return Object.assign({}, state, {
+                allUsers: action.users
             });
         case BOARD_DATA_FAILED:
             return Object.assign({}, state, {

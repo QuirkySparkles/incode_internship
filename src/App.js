@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import {
     Route, withRouter, Switch, Redirect
 } from "react-router-dom";
-import Typography from "@material-ui/core/Typography";
 import Loader from "./components/Loader";
 import { addTask } from "./store/actions/thunk/tasks";
 import { loadProfile } from "./store/actions/thunk/profile";
@@ -13,7 +12,7 @@ import { loginFailed, loginSuccess } from "./store/actions/login";
 import Header from "./components/Header/Header";
 import Board from "./components/Board/Board";
 import ProfilePage from "./components/ProfilePage";
-import TasksPage from "./components/TasksPage/TasksPage";
+import ProfileTasksPage from "./components/ProfileTasksPage/ProfileTasksPage";
 import TasksReview from "./components/TaskReview/TaskReview";
 import Login from "./components/Login/Login";
 import AddTask from "./components/AddTask/AddTask";
@@ -45,21 +44,13 @@ class App extends Component {
     }
 
     render() {
-        const { currentPath, serverMessage } = this.props;
-
-        if (serverMessage) {
-            return (
-              <div>
-                <Header />
-                <Typography
-                  variant="display1"
-                  style={{ margin: "25% 0 0 17%", justify: "center" }}
-                >
-                  {serverMessage}
-                </Typography>
-              </div>
-            );
-        }
+        const {
+            currentPath,
+            isAuth,
+            isUserTasksLoading,
+            isProfileLoading,
+            isBoardLoading
+        } = this.props;
 
         if (!localStorage.getItem("token")) { // eslint-disable-line no-undef
             if (currentPath !== "/" && currentPath !== "/registration") {
@@ -67,7 +58,7 @@ class App extends Component {
             }
         }
 
-        if (this.props.isAuth && !this.props.taskList.length && this.props.requestTasks) {
+        if (isAuth && isProfileLoading) {
             return (
               <div className="circular">
                 <Loader />
@@ -75,7 +66,15 @@ class App extends Component {
             );
         }
 
-        if (this.props.isAuth && !this.props.firstName) {
+        if (isAuth && isUserTasksLoading) {
+            return (
+              <div className="circular">
+                <Loader />
+              </div>
+            );
+        }
+
+        if (isAuth && isBoardLoading) {
             return (
               <div className="circular">
                 <Loader />
@@ -114,7 +113,7 @@ class App extends Component {
               <Route
                 path="/tasks"
                 exact
-                render={() => <TasksPage />}
+                component={ProfileTasksPage}
               />
               <Route
                 path="/tasks/:id"
@@ -132,20 +131,24 @@ class App extends Component {
 function mapStateToProps(state) {
     const { firstName, lastName } = state.profileInfo;
     const { taskList } = state.profileTasks;
-    const { allUsers } = state.boardData;
+    const { allUsers, allTasks } = state.boardData;
     const currentPath = state.router.location.pathname;
     const isAuth = state.loginStatus.status;
-    const { serverMessage } = state.requestProfile;
-    const { form, requestTasks } = state;
+    const isUserTasksLoading = state.profileTasks.isLoading;
+    const isProfileLoading = state.requestProfile.isLoading;
+    const isBoardLoading = state.boardData.isLoading;
+    const { form } = state;
     return {
+        isUserTasksLoading,
+        isProfileLoading,
+        isBoardLoading,
         firstName,
-        requestTasks,
         allUsers,
+        allTasks,
         lastName,
         currentPath,
         taskList,
         isAuth,
-        serverMessage,
         form
     };
 }
@@ -162,5 +165,8 @@ function mapDispatchToProps(dispatch) {
 
 
 export default withRouter(
-    connect(mapStateToProps, mapDispatchToProps)(App)
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(App)
 );

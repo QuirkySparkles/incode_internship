@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import {
     ListItem,
     ListItemIcon,
@@ -7,19 +8,32 @@ import {
     withStyles
 } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import { openModal } from "../store/actions";
 
 const styles = {};
 
-const User = ({ firstName, lastName }) => (
+const User = ({ profileInfo, showModal }) => (
   <div>
-    <ListItem button>
+    <ListItem
+      button
+      onClick={() => showModal(profileInfo)}
+    >
       <ListItemIcon>
         <AccountCircle />
       </ListItemIcon>
-      <ListItemText primary={`${firstName} ${lastName}`} />
+      <ListItemText primary={`${profileInfo.firstName} ${profileInfo.lastName}`} />
     </ListItem>
     <Divider />
   </div>
 );
 
-export default withStyles(styles)(User);
+function mapDispatchToProps(dispatch) {
+    return {
+        showModal: userInfo => dispatch(openModal(userInfo))
+    };
+}
+
+export default connect(
+    null,
+    mapDispatchToProps
+)(withStyles(styles)(User));

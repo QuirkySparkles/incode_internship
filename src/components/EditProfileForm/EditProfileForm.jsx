@@ -3,6 +3,7 @@ import { Field, reduxForm } from "redux-form";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import FormHelperText from "@material-ui/core/FormHelperText";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import styles from "./styles";
@@ -46,12 +47,16 @@ const renderTextField = ({
     input,
     label,
     meta: { error },
+    multiline,
+    rows,
     ...custom
 }) => (
   <TextField
     label={label}
     fullWidth
     error={error}
+    multiline={multiline}
+    rows={rows}
     {...input}
     {...custom}
   />
@@ -76,7 +81,13 @@ const renderDatePicker = ({
   />
 );
 
-const EditForm = ({ handleSubmit, handleCancel, classes }) => (
+const EditForm = ({
+    handleSubmit,
+    handleCancel,
+    classes,
+    editStatus,
+    pristine
+}) => (
   <div className={classes.editForm}>
     <Typography variant="display1" align="center">
       Edit
@@ -95,18 +106,39 @@ const EditForm = ({ handleSubmit, handleCancel, classes }) => (
         <Field name="email" component={renderTextField} label="Email" />
       </div>
       <div>
-        <Field name="skillList" component={renderTextField} label="List of skills" />
+        <Field
+          name="skillList"
+          component={renderTextField}
+          label="List of skills"
+          multiline
+          rows={5}
+        />
         <FormHelperText>
           Use comma for separation
         </FormHelperText>
       </div>
       <br />
-      <Button variant="contained" color="primary" type="submit" className={classes.submitButtom}>
-         Apply changes
+      <Button
+        variant="contained"
+        color="primary"
+        type="submit"
+        className={classes.submitButtom}
+        disabled={editStatus.isChanging || pristine}
+      >
+        Apply changes
+        {editStatus.isChanging
+          && <CircularProgress className={classes.circular} size={10} /> }
       </Button>
-      <Button variant="contained" color="secondary" onClick={() => handleCancel(false)}>
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={() => handleCancel(false)}
+      >
         Cancel
       </Button>
+      <Typography variant="subheading">
+        {editStatus.serverMessage}
+      </Typography>
     </form>
   </div>
 );

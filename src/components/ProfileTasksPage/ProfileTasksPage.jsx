@@ -8,7 +8,7 @@ import Task from "../Task";
 import styles from "./styles";
 
 
-const TasksPage = ({ taskList, classes }) => (
+const ProfileTasksPage = ({ taskList, classes, serverMessage }) => (
   <div style={{ padding: 25 }}>
     <Grid container spacing={24} justify="center" className={classes.container}>
       <Grid item xs="auto">
@@ -16,7 +16,14 @@ const TasksPage = ({ taskList, classes }) => (
           Tasks
         </Typography>
         <Grid container justify="center" spacing={16}>
-          {!taskList[0] && (
+          {serverMessage
+            && (
+            <Typography variant="display1" align="center" className={classes.tip2}>
+              {serverMessage}
+            </Typography>
+           )}
+          {(!taskList[0] && !serverMessage)
+            && (
             <Typography variant="display1" align="center" className={classes.tip}>
               You have no tasks for now
             </Typography>
@@ -36,14 +43,19 @@ const TasksPage = ({ taskList, classes }) => (
 
 function mapStateToProps(state) {
     const { firstName, lastName } = state.profileInfo;
+    const { serverMessage } = state.requestProfile; // !!! profile tasks !!!
     const isAuth = state.loginStatus;
     const { taskList } = state.profileTasks;
     return {
-        isAuth, taskList, firstName, lastName
+        isAuth,
+        taskList,
+        firstName,
+        lastName,
+        serverMessage
     };
 }
 
 
 export default connect(
     mapStateToProps
-)(withStyles(styles)(TasksPage));
+)(withStyles(styles)(ProfileTasksPage));

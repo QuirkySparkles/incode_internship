@@ -6,9 +6,10 @@ import Typography from "@material-ui/core/Typography";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
 import { withStyles } from "@material-ui/core/styles";
+import Loader from "../Loader";
 import { loadProfile } from "../../store/actions/thunk/profile";
 import { getActiveTask } from "../../store/actions";
-import { addComment, changeTaskStatus } from "../../store/actions/thunk/tasks";
+import { addComment, changeTaskStatus, deleteComment } from "../../store/actions/thunk/tasks";
 import { clearCommentServerMessage } from "../../store/actions/handleComments";
 import Comments from "../Comments/Comments";
 import AddComment from "../AddComment/AddComment";
@@ -44,7 +45,8 @@ class TaskReview extends React.Component {
         const tzOffset = (new Date()).getTimezoneOffset() * 60000;
         const prepareComment = Object.assign({}, newComment, {
             author: activeUser,
-            createdAt: (new Date(Date.now() - tzOffset)).toISOString().slice(0, -1)
+            createdAt: (new Date(Date.now() - tzOffset)).toISOString().slice(0, -1),
+            authorId: this.props.profileInfo._id
         });
         this.props.addComment(prepareComment, id);
         this.props.resetField();
@@ -55,16 +57,21 @@ class TaskReview extends React.Component {
             currentTask,
             classes,
             isAdmin,
+            isChanging,
             profileInfo,
-            serverMessage
+            serverMessage,
+            removeComment
         } = this.props;
         const { id } = this.props.match.params;
         const isUserPerformer = currentTask.performerId === profileInfo._id;
+        if (isChanging) {
+          return (<Loader />);
+        }
         if (!currentTask.comments) {
-        return (
-          <Typography variant="display1" align="center" className={classes.warning}>
-            {"This task doesn't exist."}
-          </Typography>);
+          return (
+            <Typography variant="display1" align="center" className={classes.warning}>
+              {"Task not found."}
+            </Typography>);
         }
         return (
           <div>
@@ -117,6 +124,10 @@ class TaskReview extends React.Component {
               </Typography>
               <Comments
                 commentList={currentTask.comments}
+                removeComment={removeComment}
+                taskId={currentTask._id}
+                isAdmin={isAdmin}
+                currentUser={profileInfo._id}
               />
               <Typography
                 variant="subheading"
@@ -132,18 +143,17 @@ class TaskReview extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { requestTasks, profileInfo } = state;
-    const isAuth = state.loginStatus;
+    const { profileInfo } = state;
+    const { isChanging } = state.taskManagement;
     const { allTasks } = state.boardData;
     const { isAdmin } = state.profileInfo;
     const currentTask = state.profileTasks.activeTask;
     const activeUser = `${state.profileInfo.firstName} ${state.profileInfo.lastName}`;
     const { serverMessage } = state.handleComments;
     return {
-        requestTasks,
         allTasks,
         isAdmin,
-        isAuth,
+        isChanging,
         currentTask,
         activeUser,
         profileInfo,
@@ -160,7 +170,8 @@ function mapDispatchToProps(dispatch) {
         ),
         addComment: (newComment, id) => dispatch(addComment(newComment, id)),
         clearServerMessage: () => dispatch(clearCommentServerMessage()),
-        resetField: () => dispatch(reset("AddComment"))
+        resetField: () => dispatch(reset("AddComment")),
+        removeComment: (id, createdAt) => dispatch(deleteComment(id, createdAt))
     };
 }
 

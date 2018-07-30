@@ -16,7 +16,7 @@ export default function registrationReq(state = initialState, action) {
         case REGISTRATION_SUCCESS:
             return Object.assign({}, state, { status: false });
         case REGISTRATION_FAILED:
-            return Object.assign({}, state, { status: false, serverMessage: action.message });
+            return Object.assign({}, state, { status: false, serverMessage: action.serverMessage });
         default:
             return state;
     }

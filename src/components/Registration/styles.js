@@ -1,7 +1,15 @@
-const styles = {
-    loginForm: {
-        minWidth: "25%",
+export default ({ breakpoints }) => ({
+    regForm: {
         width: "40%",
+        [breakpoints.down("sm")]: {
+            width: "80%"
+        },
+        [breakpoints.up("md")]: {
+            width: "40%"
+        },
+        [breakpoints.up("lg")]: {
+            width: "30%"
+        },
         margin: "0 auto",
         marginTop: "7%"
     },
@@ -15,7 +23,8 @@ const styles = {
     buttons: {
         width: "100%",
         marginBottom: "10px"
+    },
+    circular: {
+        paddingLeft: "15px",
     }
-};
-
-export default styles;
+});

@@ -6,23 +6,23 @@ import {
 
 const initialState = {
     serverMessage: "",
-    status: false
+    isLoading: false
 };
 
 export default function requestProfile(state = initialState, action) {
     switch (action.type) {
         case PROFILE_REQUEST:
             return Object.assign({}, state, {
-                status: true,
+                isLoading: true,
                 serverMessage: ""
             });
         case PROFILE_SUCCESS:
             return Object.assign({}, state, {
-                status: false
+                isLoading: false
             });
         case PROFILE_FAILED:
             return Object.assign({}, state, {
-                status: false,
+                isLoading: false,
                 serverMessage: action.serverMessage
             });
         default:
