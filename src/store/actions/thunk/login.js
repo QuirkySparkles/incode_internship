@@ -23,9 +23,13 @@ export default function tryLogin(data) {
             dispatch(loginFailed("Something went wrong. Try again later"));
             if (error.response) {
                 if (error.response.status === 401) {
-                    dispatch(loginFailed(error.response.data.message));
+                    dispatch(loginFailed(error.response.data));
                     localStorage.removeItem("token"); // eslint-disable-line no-undef
-                } else dispatch(loginFailed("Something went wrong. Try again later"));
+                } else if (error.response.status === 400) {
+                    dispatch(loginFailed(error.response.data));
+                } else {
+                    dispatch(loginFailed("Something went wrong. Try again later"));
+                }
             }
         });
     };

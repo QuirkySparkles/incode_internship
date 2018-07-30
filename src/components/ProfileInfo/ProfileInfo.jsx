@@ -11,7 +11,7 @@ import styles from "./styles";
 
 
 const UserInfo = ({
-    profileInfo, turnOnEdit, classes, editStatus
+    profileInfo, turnOnEdit, classes
 }) => {
     const date = profileInfo.birthDate;
     const birthDate = `${date.slice(8, 10)}.${date.slice(5, 7)}.${date.slice(0, 4)}`;
@@ -26,7 +26,7 @@ const UserInfo = ({
             <Edit />
           </IconButton>
           <CardContent>
-            <Typography gutterBottom variant="headline" component="h2">
+            <Typography gutterBottom variant="headline" component="h2" className={classes.tip}>
               {`${profileInfo.firstName} ${profileInfo.lastName}`}
             </Typography>
             <Typography gutterBottom variant="title" className={classes.note}>
@@ -48,10 +48,6 @@ const UserInfo = ({
                 </Typography>
                 )}
             </List>
-            <Typography variant="subheading" className={classes.serverMessage}>
-              {editStatus.serverMessage}
-            </Typography>
-
           </CardContent>
         </Card>
       </div>

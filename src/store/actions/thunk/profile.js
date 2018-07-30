@@ -6,7 +6,8 @@ import {
     profileFailed,
     editProfileRequest,
     editProfileSuccess,
-    editProfileFailed
+    editProfileFailed,
+    getAllUsers
 } from "..";
 import { getProfileTasks } from "./tasks";
 
@@ -39,12 +40,15 @@ export function editProfile(profile) {
         return axios.put("http://localhost:3030/users/edit", profile)
             .then((response) => {
                 dispatch(editProfileSuccess(response.data.message));
-                dispatch(profileSuccess(response.data.user));
+                dispatch(profileSuccess(response.data.userToUpdate));
+                dispatch(getAllUsers(response.data.allUsers));
             })
             .catch((error) => {
                 dispatch(editProfileFailed("Server error. Profile hasn't been updated."));
                 if (error.response) {
-                    if (error.response.status === 401) {
+                    if (error.response.status === 400) {
+                        dispatch(editProfileFailed(error.response.data));
+                    } else if (error.response.status === 401) {
                         dispatch(loginFailed("You aren't logged in"));
                         dispatch(editProfileFailed("You must be logged in to perform this action!"));
                         localStorage.removeItem("token"); // eslint-disable-line no-undef

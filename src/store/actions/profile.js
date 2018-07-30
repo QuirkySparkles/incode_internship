@@ -5,8 +5,7 @@ import {
     SWITCH_EDIT,
     EDIT_PROFILE_REQUEST,
     EDIT_PROFILE_SUCCESS,
-    EDIT_PROFILE_FAILED,
-    CLEAR_EDIT_MESSAGE
+    EDIT_PROFILE_FAILED
 } from "./types";
 
 export function profileRequest() {
@@ -53,11 +52,5 @@ export function editProfileFailed(serverMessage) {
     return {
         type: EDIT_PROFILE_FAILED,
         serverMessage
-    };
-}
-
-export function clearEditMessage() {
-    return {
-        type: CLEAR_EDIT_MESSAGE
     };
 }

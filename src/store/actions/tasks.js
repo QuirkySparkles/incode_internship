@@ -1,5 +1,5 @@
 import {
-    USER_TASK_REQUEST,
+    USER_TASKS_REQUEST,
     USER_TASKS_RECEIVED,
     SET_ACTIVE_TASK,
     CHANGE_TASK_STATUS_REQ,
@@ -8,16 +8,19 @@ import {
     ADD_TASK_REQUEST,
     ADD_TASK_SUCCESS,
     ADD_TASK_FAILED,
-    CLEAR_ADD_TASK_MESSAGE
+    DELETE_TASK_REQUEST,
+    DELETE_TASK_SUCCESS,
+    DELETE_TASK_FAILED,
+    CLEAR_TASK_SERVER_MESSAGE
 } from "./types";
 
-export function taskRequest() {
+export function profileTasksRequest() {
     return {
-        type: USER_TASK_REQUEST
+        type: USER_TASKS_REQUEST
     };
 }
 
-export function taskSuccess(data) {
+export function profileTasksSuccess(data) {
     return {
         type: USER_TASKS_RECEIVED,
         data
@@ -70,8 +73,26 @@ export function addTaskFailed(serverMessage) {
     };
 }
 
-export function clearAddTaskMessage() {
+export function clearTaskServerMessage() {
     return {
-        type: CLEAR_ADD_TASK_MESSAGE
+        type: CLEAR_TASK_SERVER_MESSAGE
+    };
+}
+
+export function deleteTaskRequest() {
+    return {
+        type: DELETE_TASK_REQUEST
+    };
+}
+
+export function deleteTaskSuccess() {
+    return {
+        type: DELETE_TASK_SUCCESS
+    };
+}
+
+export function deleteTaskFailed() {
+    return {
+        type: DELETE_TASK_FAILED
     };
 }

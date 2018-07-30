@@ -5,8 +5,7 @@ export {
     switchEdit,
     editProfileRequest,
     editProfileSuccess,
-    editProfileFailed,
-    clearEditMessage
+    editProfileFailed
 } from "./profile";
 
 export {
@@ -22,8 +21,8 @@ export {
 } from "./registration";
 
 export {
-    taskRequest,
-    taskSuccess,
+    profileTasksRequest,
+    profileTasksSuccess,
     changeTaskStatusReq,
     changeTaskStatusFail,
     getActiveTask,
@@ -31,14 +30,18 @@ export {
     addTaskRequest,
     addTaskSuccess,
     addTaskFailed,
-    clearAddTaskMessage
+    deleteTaskRequest,
+    deleteTaskSuccess,
+    deleteTaskFailed,
+    clearTaskServerMessage
 } from "./tasks";
 
 export {
     boardDataRequest,
     boardDataSuccess,
     boardDataFailed,
-    getAllTasks
+    getAllTasks,
+    getAllUsers
 } from "./boardData";
 
 export {
@@ -49,3 +52,16 @@ export {
     deleteCommentSuccess,
     deleteCommentFailed
 } from "./handleComments";
+
+export {
+    openModal,
+    closeModal
+} from "./boardModal";
+
+export {
+    openEditModal,
+    editTaskRequest,
+    editTaskSuccess,
+    editTaskFailed,
+    closeEditModal
+} from "./editTaskModal";

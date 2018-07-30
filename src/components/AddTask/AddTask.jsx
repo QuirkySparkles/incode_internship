@@ -3,11 +3,12 @@ import { Field, reduxForm } from "redux-form";
 import { connect } from "react-redux";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { NavLink } from "react-router-dom";
+import { NavLink, Redirect } from "react-router-dom";
 import Typography from "@material-ui/core/Typography";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { withStyles } from "@material-ui/core/styles";
 import UserSelect from "../UserSelect";
-import { clearAddTaskMessage } from "../../store/actions/tasks";
+import { clearTaskServerMessage } from "../../store/actions/tasks";
 import styles from "./styles";
 
 
@@ -55,16 +56,16 @@ const renderTextField = ({
 
 
 const renderFullDesc = ({
+  label,
   rows,
   input,
-  placeholder,
   meta: { error, touched }
 }) => (
   <TextField
+    label={label}
     multiline
     fullWidth
     margin="dense"
-    placeholder={placeholder}
     error={error && touched}
     helperText={touched && error}
     rows={rows}
@@ -85,13 +86,23 @@ class AddTask extends React.Component {
 
     addTask(newTask) {
         this.props.addTask(newTask);
-        this.props.resetField();
     }
 
     render() {
         const {
-            handleSubmit, classes, userList, serverMessage
+            handleSubmit,
+            classes,
+            userList,
+            serverMessage,
+            pristine,
+            isChanging,
+            isAdmin
         } = this.props;
+
+        if (!isAdmin) {
+            return (<Redirect to="/main" />);
+        }
+
         return (
           <div className={classes.editForm}>
             <Typography variant="display1" align="center">
@@ -106,10 +117,10 @@ class AddTask extends React.Component {
               </div>
               <div className={classes.input}>
                 <Field
+                  label="Description"
                   name="fullDescription"
                   component={renderFullDesc}
                   type="text"
-                  placeholder="Description"
                   rows="5"
                 />
               </div>
@@ -122,8 +133,10 @@ class AddTask extends React.Component {
                 />
               </div>
               <br />
-              <Button variant="contained" color="primary" type="submit" className={classes.submitButtom}>
+              <Button variant="contained" color="primary" type="submit" className={classes.submitButtom} disabled={isChanging || pristine}>
                 Create
+                {isChanging
+                  && <CircularProgress className={classes.circular} size={10} /> }
               </Button>
               <NavLink to="/main" className={classes.cancel}>
                 <Button variant="contained" color="secondary">
@@ -141,16 +154,19 @@ class AddTask extends React.Component {
 
 function mapStateToProps(state) {
     const userList = state.boardData.allUsers;
-    const { serverMessage } = state.addTask;
+    const { isChanging, serverMessage } = state.taskManagement;
+    const { isAdmin } = state.profileInfo;
     return {
+        isChanging,
         serverMessage,
-        userList
+        userList,
+        isAdmin
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        clearMessage: () => dispatch(clearAddTaskMessage())
+        clearMessage: () => dispatch(clearTaskServerMessage())
     };
 }
 

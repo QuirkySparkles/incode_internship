@@ -1,5 +1,8 @@
 import {
-    LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILED, LOGOUT
+    LOGIN_REQUEST,
+    LOGIN_SUCCESS,
+    LOGIN_FAILED,
+    LOGOUT
 } from "./types";
 
 export function loginRequest() {

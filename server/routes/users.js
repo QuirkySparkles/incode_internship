@@ -10,6 +10,6 @@ router.get("/profile", checkAuth, UserController.getProfile);
 
 router.post("/registration", UserController.registerUser);
 
-router.put("/edit", UserController.updateUserInfo);
+router.put("/edit", checkAuth, UserController.updateUserInfo);
 
 module.exports = router;

@@ -1,7 +1,16 @@
-const styles = {
+export default ({ breakpoints }) => ({
   editForm: {
       padding: "30px",
-      width: "60%",
+      width: "50%",
+        [breakpoints.down("sm")]: {
+            width: "70%"
+        },
+        [breakpoints.up("md")]: {
+            width: "40%"
+        },
+        [breakpoints.up("lg")]: {
+            width: "30%"
+        },
       margin: "4px auto 60px",
       border: "3px solid #ededed",
       borderTop: "none"
@@ -18,7 +27,8 @@ const styles = {
   },
   serverMessage: {
       marginTop: "20px"
+  },
+  circular: {
+      marginLeft: "5px"
   }
-};
-
-export default styles;
+});

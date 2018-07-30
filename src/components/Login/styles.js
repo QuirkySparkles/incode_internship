@@ -1,8 +1,15 @@
-const styles = {
+export default ({ breakpoints }) => ({
     loginForm: {
-        minWidth: "25%",
         width: "40%",
-        maxWidth: "400px",
+        [breakpoints.down("sm")]: {
+            width: "80%"
+        },
+        [breakpoints.up("md")]: {
+            width: "40%"
+        },
+        [breakpoints.up("lg")]: {
+            width: "30%"
+        },
         margin: "0 auto",
         marginTop: "10%",
         verticalAlign: "center"
@@ -18,6 +25,4 @@ const styles = {
         width: "100%",
         marginBottom: "10px"
     }
-};
-
-export default styles;
+});

@@ -1,13 +1,21 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Drawer, List, withStyles } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
-import Loader from "../Loader";
+import {
+    Drawer,
+    List,
+    withStyles,
+    ListItem,
+    ListItemText,
+    Typography
+} from "@material-ui/core";
 import loadBoardData from "../../store/actions/thunk/loadBoardData";
-import { deleteTask } from "../../store/actions/thunk/tasks";
+import { deleteTask, editTask } from "../../store/actions/thunk/tasks";
+import { openEditModal } from "../../store/actions/editTaskModal";
 import toggleDrawer from "../../store/actions/drawer";
 import User from "../User";
 import AllTasks from "../AllTasks/AllTasks";
+import UserModalBoard from "../UserModalBoard";
+import EditTaskModal from "../EditTaskModal/EditTaskModal";
 import styles from "./styles";
 
 
@@ -16,6 +24,7 @@ class Board extends React.Component {
         super(props);
         this.toggleDrawer = this.toggleDrawer.bind(this);
         this.deleteTask = this.deleteTask.bind(this);
+        this.applyEditTask = this.applyEditTask.bind(this);
     }
 
     toggleDrawer() {
@@ -26,13 +35,23 @@ class Board extends React.Component {
         this.props.deleteTask(taskId);
     }
 
+    applyEditTask(editedTask) {
+        const editedTaskId = editedTask._id;
+        const editedTaskWithPerf = editedTask;
+        const perf = this.props.allUsers.filter(user => user._id === editedTask.performerId)[0];
+        editedTaskWithPerf.performer = `${perf.firstName} ${perf.lastName}`;
+        this.props.applyEdit(editedTaskId, editedTaskWithPerf);
+    }
+
     render() {
         const {
+            showEditModal,
             drawerState,
             allUsers,
             allTasks,
             classes,
             isAdmin,
+            taskToEdit,
             serverMessage
         } = this.props;
 
@@ -44,10 +63,6 @@ class Board extends React.Component {
             );
         }
 
-        if (!allUsers.length || !allTasks.length) {
-            return <Loader />;
-        }
-
         return (
           <div>
             <Drawer
@@ -57,19 +72,30 @@ class Board extends React.Component {
               onClose={this.toggleDrawer}
             >
               <List>
+                {!allUsers[0]
+                 && (
+                 <ListItem>
+                   <ListItemText primary="There are no users here" />
+                 </ListItem>)}
                 {allUsers.map(user => (
                   <User
                     key={user.login}
-                    firstName={user.firstName}
-                    lastName={user.lastName}
+                    profileInfo={user}
                   />
                 ))}
               </List>
             </Drawer>
             <AllTasks
               allTasks={allTasks}
+              showEditModal={showEditModal}
               deleteTask={this.deleteTask}
               isAdmin={isAdmin}
+            />
+            <UserModalBoard />
+            <EditTaskModal
+              initialValues={taskToEdit}
+              enableReinitialize
+              onSubmit={this.applyEditTask}
             />
           </div>
         );
@@ -78,22 +104,30 @@ class Board extends React.Component {
 
 function mapStateToProps(state) {
     const { drawerState } = state;
-    const { allUsers, allTasks, serverMessage } = state.boardData;
+    const {
+        allUsers,
+        allTasks,
+        serverMessage
+    } = state.boardData;
     const { isAdmin } = state.profileInfo;
+    const { taskToEdit } = state.editTaskModal;
     return {
         serverMessage,
         drawerState,
         allUsers,
         allTasks,
-        isAdmin
+        isAdmin,
+        taskToEdit
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
+        showEditModal: task => dispatch(openEditModal(task)),
         deleteTask: taskId => dispatch(deleteTask(taskId)),
         loadBoard: () => dispatch(loadBoardData()),
-        toggleDrawer: () => dispatch(toggleDrawer())
+        toggleDrawer: () => dispatch(toggleDrawer()),
+        applyEdit: (id, editedTask) => dispatch(editTask(id, editedTask))
     };
 }
 

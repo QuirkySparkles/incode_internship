@@ -6,9 +6,15 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import { Link } from "react-router-dom";
 import Delete from "@material-ui/icons/Delete";
+import Edit from "@material-ui/icons/Edit";
 
 
-const BoardTask = ({ task, deleteTask, isAdmin }) => (
+const BoardTask = ({
+    task,
+    deleteTask,
+    isAdmin,
+    showEditModal
+}) => (
   <Card>
     <Link to={`/tasks/${task._id}`} style={{ textDecoration: "none" }}>
       <CardHeader
@@ -27,9 +33,14 @@ const BoardTask = ({ task, deleteTask, isAdmin }) => (
     </Link>
     {isAdmin
         && (
-        <IconButton color="default" onClick={() => deleteTask(task._id)}>
-          <Delete />
-        </IconButton>)
+        <div>
+          <IconButton color="default" onClick={() => showEditModal(task)}>
+            <Edit />
+          </IconButton>
+          <IconButton color="default" onClick={() => deleteTask(task._id)}>
+            <Delete />
+          </IconButton>
+        </div>)
       }
   </Card>
 );

@@ -1,39 +1,42 @@
 import React from "react";
 import { connect } from "react-redux";
-import { loadProfile, editProfile } from "../store/actions/thunk/profile";
+import Typography from "@material-ui/core/Typography";
 import Loader from "./Loader";
+import { loadProfile, editProfile } from "../store/actions/thunk/profile";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
-import EditForm from "./EditForm/EditForm";
+import EditProfileForm from "./EditProfileForm/EditProfileForm";
 import { switchEdit } from "../store/actions";
-import { clearEditMessage } from "../store/actions/profile";
 
 
 class ProfilePage extends React.Component {
     constructor(props) {
         super(props);
         this.turnEditState = this.turnEditState.bind(this);
-        this.submit = this.submit.bind(this);
-    }
-
-    componentDidMount() {
-        this.props.clearEditMessage();
+        this.editProfileApply = this.editProfileApply.bind(this);
     }
 
     turnEditState() {
         this.props.switchEdit();
     }
 
-    submit(values) {
+    editProfileApply(values) {
         const editValues = { ...values, id: this.props.profileInfo._id };
-        this.props.switchEdit();
         this.props.editProfile(editValues);
     }
 
     render() {
-        const { profileInfo, editStatus } = this.props;
+        const { profileInfo, editStatus, serverMessage } = this.props;
 
-        if (!profileInfo.firstName) {
+        if (!profileInfo.firstName && !serverMessage) {
             return (<Loader />);
+        }
+
+        if (serverMessage) {
+            return (
+              <Typography variant="display1" style={{ margin: "20% 0" }}>
+                {serverMessage}
+              </Typography>
+            );
         }
 
         const date = profileInfo.birthDate;
@@ -49,10 +52,11 @@ class ProfilePage extends React.Component {
         if (this.props.turnOnEdit) {
             return (
                 (
-                  <EditForm
+                  <EditProfileForm
                     initialValues={initialValues}
                     handleCancel={this.turnEditState}
-                    onSubmit={this.submit}
+                    onSubmit={this.editProfileApply}
+                    editStatus={editStatus}
                   />)
                 );
             }
@@ -61,7 +65,7 @@ class ProfilePage extends React.Component {
             <ProfileInfo
               profileInfo={this.props.profileInfo}
               turnOnEdit={this.turnEditState}
-              editStatus={editStatus}
+              serverMessage={serverMessage}
             />)
         );
     }
@@ -70,10 +74,12 @@ class ProfilePage extends React.Component {
 function mapStateToProps(state) {
     const { turnOnEdit, profileInfo } = state;
     const editStatus = state.editProfile;
+    const { serverMessage } = state.requestProfile;
     return {
         turnOnEdit,
         profileInfo,
-        editStatus
+        editStatus,
+        serverMessage
     };
 }
 
@@ -82,7 +88,6 @@ function mapDispatchToProps(dispatch) {
         loadProfile: () => dispatch(loadProfile()),
         editProfile: values => dispatch(editProfile(values)),
         switchEdit: () => dispatch(switchEdit()),
-        clearEditMessage: () => dispatch(clearEditMessage())
     };
 }
 
